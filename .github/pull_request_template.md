@@ -34,3 +34,8 @@ Beschrijf de tests die u hebt uitgevoerd om uw wijzigingen te verifiëren. Geef 
 - [ ] Ik heb de bijbehorende wijzigingen in de documentatie aangebracht
 - [ ] Mijn wijzigingen genereren geen nieuwe waarschuwingen
 - [ ] Ik heb tests toegevoegd die bewijzen dat mijn oplossing effectief is of dat mijn functionaliteit werkt.
+
+# Ai gebruik:
+- [ ] Ik heb AI gebruikt om deze aanpassingen te schrijven
+	- [ ] Ik heb de code van de AI *zelf* gecontroleerd
+	- [ ] Ik heb de code van de AI *zelf* getest
