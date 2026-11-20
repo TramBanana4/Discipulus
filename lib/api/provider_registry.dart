@@ -16,6 +16,12 @@ class SchoolApiProvider {
     required this.schoolData,
   }) {
     final provider = client.providerType;
+    if (schoolData.providerType != provider) {
+      throw ArgumentError(
+        'School-data provider (${schoolData.providerType}) does not '
+        'match client provider ($provider).',
+      );
+    }
     if (authenticator.providerType != provider) {
       throw ArgumentError(
         'Authenticator provider (${authenticator.providerType}) does not '
