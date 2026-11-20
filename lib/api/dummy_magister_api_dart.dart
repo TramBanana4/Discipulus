@@ -1,6 +1,7 @@
 import 'package:discipulus/api/models/calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:discipulus/api/api_provider.dart';
 import 'package:discipulus/api/dummy_routes/interceptors.dart';
 import 'package:discipulus/api/dummy_routes/messages.dart';
 import 'package:discipulus/api/dummy_routes/persons.dart';
@@ -14,6 +15,9 @@ import 'package:discipulus/models/account.dart';
 
 class DummyMagister implements Magister {
   @override
+  ApiProviderType get providerType => ApiProviderType.magister;
+
+  @override
   Uri apiEndpoint = Uri.base;
 
   @override
@@ -23,7 +27,7 @@ class DummyMagister implements Magister {
   Future<TokenSet> Function() tokenSet = () => Future.value(TokenSet());
 
   @override
-  Future<void> refreshTokenSet() async {
+  Future<void> refreshCredentials() async {
     return;
   }
 
