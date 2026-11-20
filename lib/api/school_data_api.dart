@@ -1,3 +1,4 @@
+import 'package:discipulus/api/api_provider.dart';
 import 'package:discipulus/api/models/activities.dart';
 import 'package:discipulus/api/models/account.dart';
 import 'package:discipulus/api/models/assignments.dart';
@@ -12,6 +13,7 @@ import 'package:flutter/material.dart';
 /// existing application models. A provider can expose only the capabilities
 /// it supports; this interface is the initial common subset.
 abstract interface class SchoolDataApi {
+  ApiProviderType get providerType;
   Future<List<Schoolyear>> schoolyears(
     int personId, {
     DateTimeRange? range,
