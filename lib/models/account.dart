@@ -4,6 +4,8 @@ import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:discipulus/api/dummy_magister_api_dart.dart';
 import 'package:discipulus/api/magister_api_dart.dart';
+import 'package:discipulus/api/magister_school_data_api.dart';
+import 'package:discipulus/api/school_data_api.dart';
 import 'package:discipulus/api/models/account.dart';
 import 'package:discipulus/api/models/activities.dart';
 import 'package:discipulus/api/models/assignments.dart';
@@ -45,6 +47,12 @@ class DiscipulusAccount {
 
   /// The uuid of the user in Magister. This is used for the new calendar endpoint.
   String? magisterUuid;
+
+  /// Provider-neutral school data access for profile and dashboard features.
+  /// The current account implementation is Magister; Somtoday can be supplied
+  /// here later without changing the consuming features.
+  @ignore
+  SchoolDataApi get schoolData => MagisterSchoolDataApi(api);
 
   @ignore
   Magister get api {
