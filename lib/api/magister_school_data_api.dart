@@ -1,3 +1,4 @@
+import 'package:discipulus/api/api_provider.dart';
 import 'package:discipulus/api/magister_api_dart.dart';
 import 'package:discipulus/api/school_data_api.dart';
 import 'package:discipulus/api/models/activities.dart';
@@ -16,6 +17,9 @@ class MagisterSchoolDataApi implements SchoolDataApi {
   final Magister magister;
 
   const MagisterSchoolDataApi(this.magister);
+
+  @override
+  ApiProviderType get providerType => ApiProviderType.magister;
 
   @override
   Future<List<Schoolyear>> schoolyears(
