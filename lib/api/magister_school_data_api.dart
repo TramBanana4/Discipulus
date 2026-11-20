@@ -1,6 +1,7 @@
 import 'package:discipulus/api/magister_api_dart.dart';
 import 'package:discipulus/api/school_data_api.dart';
 import 'package:discipulus/api/models/activities.dart';
+import 'package:discipulus/api/models/account.dart';
 import 'package:discipulus/api/models/assignments.dart';
 import 'package:discipulus/api/models/calendar.dart';
 import 'package:discipulus/api/models/schoolyears.dart';
