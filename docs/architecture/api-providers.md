@@ -18,6 +18,13 @@ Magister routes.
 - `Magister` implements this contract.
 - `DummyMagister` remains the offline implementation and follows the same
   Magister client contract.
+- `SchoolDataApi` defines the first provider-neutral application capability.
+- `MagisterSchoolDataApi` adapts existing Magister routes to that capability.
+- Account setup and profile synchronization now use the capability for
+  schoolyears, calendar events, assignments, activities, study guides, child
+  lookup, and profile pictures.
+- `SchoolAuthenticator` and `AuthSession` define a provider-owned sign-in
+  lifecycle without embedding either platform's OAuth details.
 
 This is an incremental extraction. The account and profile layers still call
 Magister-specific routes and models. They are not provider-neutral yet.
@@ -67,12 +74,14 @@ support from a provider name.
 
 ## Incremental migration plan
 
-1. Establish the provider client contract (in progress).
-2. Extract provider-neutral domain capability interfaces and shared models.
-3. Introduce provider-owned authenticators and a provider-neutral persisted
-   session, while retaining a reader for existing Magister account records.
-4. Move application features from direct Magister route calls to capability
-   interfaces. Keep a Magister adapter as the first implementation and verify
+1. Establish the provider client contract (done as an initial transport seam).
+2. Extract provider-neutral domain capability interfaces and shared models
+   (first school-data capability added; further capabilities remain).
+3. Introduce provider-owned authenticators (contract added); connect the
+   existing Magister login flow and introduce provider-neutral persisted
+   sessions while retaining a reader for existing Magister account records.
+4. Move remaining application features from direct Magister route calls to
+   capability interfaces. Keep Magister as the first implementation and verify
    parity.
 5. Add the Somtoday authenticator and adapters one capability at a time.
 6. Add adapter tests, persistence compatibility tests, and regression tests
@@ -81,6 +90,10 @@ support from a provider name.
 ## Current limitations
 
 The current `ApiProviderClient` is deliberately not presented as the final
-application API. It is only the transport/authentication seam. A Somtoday
-client should not be considered feature-integrated until the account,
-profile, and feature layers consume provider-neutral capabilities.
+application API. The first school-data capability now separates several
+profile features from Magister routes, but messaging, account identity,
+permissions, and some calendar extensions remain Magister-specific. The new
+authenticator contract is not yet wired into the existing login flow or
+persistence. Somtoday is therefore not yet a usable provider; it becomes
+feature-integrated only after its real authentication/API contract is
+implemented and the relevant capabilities are mapped.
