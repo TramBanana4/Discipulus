@@ -19,8 +19,10 @@ flow, client identifier, scope, or response shape is assumed here.
      and Somtoday-specific error translation.
 
 3. **School data**
-   - Implement `SchoolDataApi` and map Somtoday responses into the shared
-     application models at the adapter boundary.
+   - Implement `SchoolDataApi` and set its `providerType` to
+     `ApiProviderType.somtoday`.
+   - Map Somtoday responses into the shared application models at the adapter
+     boundary.
    - If a capability is not available from the verified API, expose that
      limitation explicitly rather than returning fabricated data.
 
