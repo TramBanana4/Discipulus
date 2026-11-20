@@ -339,10 +339,11 @@ class Profile {
   final schoolyears = IsarLinks<Schoolyear>();
   Future<List<Schoolyear>> getSchoolyears({DateTimeRange? range}) async {
     Iterable<Schoolyear> newSchoolyears =
-        (await account.value!.api.person(id).schoolyear().schoolyears(
-                  range: range ??
-                      DateTimeRange(start: DateTime(2013), end: DateTime.now()),
-                ))
+        (await account.value!.schoolData.schoolyears(
+          id,
+          range: range ??
+              DateTimeRange(start: DateTime(2013), end: DateTime.now()),
+        ))
             .map((e) => e..profile.value = this);
 
     await isar.schoolyears.removeChecker(
@@ -412,7 +413,11 @@ class Profile {
   Future<List<CalendarEvent>> getEvents(DateTimeRange range) async {
     List<CalendarEvent> events = (await Future.wait([
       // First, we get the normal events
-      account.value!.api.person(id).calendarEvents(range, includeAbsences: account.value!.permissions.hasPermissions(PermissionType.absenties)),
+      account.value!.schoolData.calendarEvents(
+        id,
+        range,
+        includeAbsences: account.value!.permissions.hasPermissions(PermissionType.absenties),
+      ),
 
       // Secondly, we get the other 'new' events if the uuid has been set
       if (account.value!.magisterUuid != null)
@@ -461,7 +466,7 @@ class Profile {
         );
 
     List<Assignment> newAssignments =
-        await account.value!.api.person(id).assignments(fetchRange);
+        await account.value!.schoolData.assignments(id, fetchRange);
 
     for (Assignment assignment in newAssignments) {
       assignment.profile.value = this;
@@ -520,7 +525,7 @@ class Profile {
   final activities = IsarLinks<Activity>();
   Future<List<Activity>> getActivities() async {
     List<Activity> newActivities =
-        await account.value!.api.person(id).activiteiten;
+        await account.value!.schoolData.activities(id);
     for (final activity in newActivities) {
       activity.profile.value = this;
     }
@@ -558,13 +563,13 @@ class Profile {
   final studiewijzers = IsarLinks<Studiewijzer>();
   Future<void> fetchStudiewijzers() async {
     // Get studiewijzers if the right permissions are present
-    List<Studiewijzer> newStudiewijzers = (await account.value!.api
-            .person(id)
-            .studiewijzers(
-                includeProjects: account.value!.permissions
-                    .hasPermissions(PermissionType.projecten),
-                includeStudiewijzers: account.value!.permissions
-                    .hasPermissions(PermissionType.studiewijzers)))
+    List<Studiewijzer> newStudiewijzers = (await account.value!.schoolData.studyGuides(
+          id,
+          includeProjects: account.value!.permissions
+              .hasPermissions(PermissionType.projecten),
+          includeStudyGuides: account.value!.permissions
+              .hasPermissions(PermissionType.studiewijzers),
+        ))
         .map((e) => e..profile.value = this)
         .map((e) {
       Studiewijzer? original =
