@@ -128,7 +128,7 @@ class DiscipulusAccount {
       // Parent account
       LoginLogger.instance.step("Ophalen van gekoppelde kinderen voor ouderaccount");
       await Future.forEach(
-        (await api.person(apiAccount.persoon.id).children)
+        (await schoolData.children(apiAccount.persoon.id))
             .where((ch) => ch.zichtbaarVoorOuder),
         (child) async {
           final childName = child.roepnaam.isNotEmpty
@@ -139,7 +139,7 @@ class DiscipulusAccount {
             name: childName.isNotEmpty ? childName : "Kind ${child.id}",
             birthdate: child.geboortedatum,
             magisterBase64ProfilePicture:
-                await api.person(child.id).profilepicture,
+                await schoolData.profilePicture(child.id),
           )..account.value = this);
         },
       );
@@ -162,7 +162,7 @@ class DiscipulusAccount {
         name: fullName.isNotEmpty ? fullName : "Leerling",
         birthdate: apiAccount.persoon.geboortedatum,
         magisterBase64ProfilePicture:
-            await api.person(apiAccount.persoon.id).profilepicture,
+            await schoolData.profilePicture(apiAccount.persoon.id),
       )..account.value = this);
     }
 
