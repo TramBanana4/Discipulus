@@ -1,4 +1,5 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:discipulus/api/api_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:discipulus/api/models/account.dart';
 import 'package:discipulus/api/routes/messages.dart';
@@ -15,7 +16,9 @@ import 'package:native_dio_adapter/native_dio_adapter.dart';
 
 Map<int, Dio> dioInstances = {};
 
-class Magister {
+class Magister implements ApiProviderClient {
+  @override
+  ApiProviderType get providerType => ApiProviderType.magister;
   /// This identifier is used to differentiate between dio instances, which makes
   /// simultaneous token refreshing across multiple accounts possible.
   int? uuid;
@@ -42,7 +45,8 @@ class Magister {
     this.onTokenRefresh,
   });
 
-  Future<void> refreshTokenSet() async {
+  @override
+  Future<void> refreshCredentials() async {
     TokenSet? newTokenSet;
     try {
       newTokenSet = await (await tokenSet()).refresh();
@@ -98,7 +102,7 @@ class Magister {
             TokenSet tokenSet = await this.tokenSet();
             if (DateTime.now().compareTo(tokenSet.expiredDate!) >= 0) {
               // Token has expired, refreshing it
-              await refreshTokenSet();
+              await refreshCredentials();
               tokenSet = await this.tokenSet();
             }
 
@@ -108,7 +112,7 @@ class Magister {
           onError: (error, handler) async {
             if (error.response?.data == "SecurityToken Expired") {
               // The refresh has expired before expected
-              await refreshTokenSet();
+              await refreshCredentials();
               TokenSet tokenSet = await this.tokenSet();
               // Retry the request with the new tokenSet
               error.requestOptions.headers["Authorization"] =
